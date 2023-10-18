@@ -4,6 +4,7 @@ import telebot
 from constants import TELEGRAM_ACCESS_TOKEN, HOST, DB_USER, DB_PASSWORD, DB_NAME
 from my_database import MySQL
 import uuid
+import random
 
 db = MySQL(HOST, DB_USER, DB_PASSWORD, DB_NAME, True)
 db.connect()
@@ -48,6 +49,7 @@ def ayuda(message):
             '/create_note
             Titulo: <titulo de la nota>
             Descripcion: <descripcion de la nota>'
+/ver_notas o /get_notes -> 
     '''             
   )
 
@@ -71,11 +73,13 @@ def crear_nota(message):
     bot.reply_to(message, 'Formato de mensaje inválido')
     return
   
-  id_nota = uuid.uuid4().int >> 64
+  # id_nota = uuid.uuid4().int = 5624
+  id_nota = random.randint(0, 2500000)
   
   db.insert('Nota',['id', 'id_usuario', 'titulo', 'descripcion'], [[str(id_nota), str(id_usuario), f"'{title_line}'", f"'{description_line}'"]])
 
   bot.reply_to(message, 'Nota guardada correctamente')
+
 
 @bot.message_handler(['get_notes', 'ver_notas'])
 def ver_notas(message):
